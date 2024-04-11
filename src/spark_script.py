@@ -5,7 +5,10 @@ from pyspark.sql.types import StringType, IntegerType,TimestampType
 from pyspark.sql.functions import col, month, year, dayofweek, col, lit, when, cast,to_timestamp
 import pandas as pd
 import pymongo
+import argparse
 
+parser = argparse.ArgumentParser(description="Uber Data Pipeline")
+parser.add_argument("data_path", type=str, help="Path to the input data file")
 
 def create_spark_dataframe(data_path):
     """Creates a Spark DataFrame from a CSV file, handling errors gracefully."""
@@ -109,6 +112,7 @@ def run_pipeline(data_path, mongo_uri, mongo_database, mongo_collection):
     """Triggers the data processing pipeline"""
     spark = SparkSession.builder.appName("UberDataPipeline").getOrCreate()
     try:
+        args = parser.parse_args()
         raw_df = create_spark_dataframe(data_path)
         if raw_df is None:
             return
@@ -128,7 +132,9 @@ def run_pipeline(data_path, mongo_uri, mongo_database, mongo_collection):
 
 
 if __name__ == "__main__":
-    data_path = "data/uber_data.csv"
+    # data_path = "data/uber_data.csv"
+    args = parser.parse_args()
+    data_path = args.data_path
     mongo_uri = "mongodb://localhost:27017/"
     mongo_database = "uber_data_db"
     mongo_collection = "uber_data_collection"
