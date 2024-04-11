@@ -1,7 +1,8 @@
 
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
-from pyspark.sql.types import StringType, IntegerType
+from pyspark.sql.types import StringType, IntegerType,TimestampType
+from pyspark.sql.functions import col, month, year, dayofweek, col, lit, when, cast,to_timestamp
 import pandas as pd
 import pymongo
 
@@ -66,6 +67,12 @@ def add_datetime_columns(df):
     """
     Adds 'month', 'year', and 'weekday' columns to a PySpark DataFrame based on the 'tpep_pickup_datetime' column.
     """
+    "Not really necessary in this case,but this is one way of handling a change in schema type"
+    
+    df = df.withColumn("tpep_pickup_datetime", to_timestamp(col("tpep_pickup_datetime"), "yyyy-MM-dd HH:mm:ss"))
+    # df = df.withColumn("tpep_pickup_datetime", cast(col("tpep_pickup_datetime"), TimestampType()))
+    # df = df.withColumn("tpep_pickup_datetime", cast(col("tpep_pickup_datetime"), TimestampType()))
+# 
     df = df.withColumn("month", month(col("tpep_pickup_datetime"))) \
            .withColumn("year", year(col("tpep_pickup_datetime"))) \
            .withColumn("weekday", dayofweek(col("tpep_pickup_datetime")))
@@ -106,8 +113,10 @@ def run_pipeline(data_path, mongo_uri, mongo_database, mongo_collection):
         if raw_df is None:
             return
         raw_df.createOrReplaceTempView("UBER_DATA")
-
         transformed_df = add_duration_column(raw_df)
+        transformed_df = add_rate_code_name_column(transformed_df)
+        transformed_df= add_datetime_columns(transformed_df)
+
 
         # Store transformed data to MongoDB
         store_to_mongodb(transformed_df, mongo_uri, mongo_database, mongo_collection)
