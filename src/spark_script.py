@@ -35,6 +35,45 @@ def add_duration_column(df):
         F.unix_timestamp(F.col("tpep_dropoff_datetime")) - F.unix_timestamp(F.col("tpep_pickup_datetime"))
     )
 
+def add_rate_code_name_column(df):
+    """
+    Adds a 'rate_code_name' column to a PySpark DataFrame based on the 'RatecodeID' column.
+    """
+    rate_code_type = {
+        1: "Standard rate",
+        2: "JFK",
+        3: "Newark",
+        4: "Nassau or Westchester",
+        5: "Negotiated fare",
+        6: "Group ride"
+    }
+  
+
+    df = df.withColumn("rate_code_name", 
+                       F.when(F.col("RatecodeID").isin(list(rate_code_type.keys())), 
+                              F.create_map(*[F.lit(k) for k in rate_code_type.keys()])
+                                  .getItem(F.col("RatecodeID"))
+                             )
+                      )
+  
+        
+    return df
+  
+
+
+
+def add_datetime_columns(df):
+    """
+    Adds 'month', 'year', and 'weekday' columns to a PySpark DataFrame based on the 'tpep_pickup_datetime' column.
+    """
+    df = df.withColumn("month", month(col("tpep_pickup_datetime"))) \
+           .withColumn("year", year(col("tpep_pickup_datetime"))) \
+           .withColumn("weekday", dayofweek(col("tpep_pickup_datetime")))
+
+    return df
+
+
+
 
 def store_to_mongodb(df, mongo_uri, mongo_database, mongo_collection):
     """Stores a PySpark DataFrame to MongoDB."""
