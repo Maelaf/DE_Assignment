@@ -17,7 +17,8 @@ def create_spark_dataframe(data_path):
         spark = SparkSession.builder.appName("DataFrameLoader").getOrCreate()
 
         # Ensure data_path is a string:
-        data_path = "data/uber_data.csv"  # Replace with your data path
+        # data_path = "data/uber_data.csv"  # Replace with your data path
+        data_path = data_path
 
         # Read the CSV file, handling potential encoding issues:
         df = spark.read.option("header", True).option("encoding", "UTF-8").csv(data_path)
