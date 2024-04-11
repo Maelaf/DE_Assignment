@@ -21,7 +21,8 @@ def create_spark_dataframe(data_path):
         data_path = data_path
 
         # Read the CSV file, handling potential encoding issues:
-        df = spark.read.option("header", True).option("encoding", "UTF-8").csv(data_path)
+        # df = spark.read.option("header", True).option("encoding", "UTF-8").csv(data_path)
+        df = spark.read.option("header", True).option("encoding", "UTF-8").option("inferSchema", True).csv(data_path)
 
         return df
 
