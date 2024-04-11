@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  spark:
+    image: apache/spark:latest
+    volumes:
+      - ./data:/data  # Mount your CSV data directory
+      - ./spark-config:/spark-conf  # Optional: Mount Spark configuration
+
+  
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+
+networks:
+  my-network:
