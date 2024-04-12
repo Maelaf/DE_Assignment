@@ -7,7 +7,7 @@ services:
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=food
+      - POSTGRES_DB=rideapp
 
   pgadmin:
     image: dpage/pgadmin4
