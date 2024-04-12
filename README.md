@@ -8,7 +8,7 @@ Data Engineering Assignment : Data Modelling
 
 This is the third task in the Challenge, In this challenge I have tried to tackle the following tasks
 - **Task - 1** : Define the Data model of taxi_service for ad-hoc, self-serve and advance analytics requests
-- **Task - 2** : A jupyter notebook outlining the design process and some analytics calculations
+- **Task - 2** : A jupyter notebook outlining the design process and some important kpi that can be extracted
 
 ## Instalation GUIDE
 
