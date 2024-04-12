@@ -12,6 +12,21 @@ config_version: 3.0
 
 # Datasources tell Great Expectations where your data lives and how to get it.
 # Read more at https://docs.greatexpectations.io/docs/guides/connecting_to_your_data/connect_to_data_overview
+
+# my_spark_datasource:
+#   execution_engine:
+#     module_name: great_expectations.execution_engine
+#     class_name: SparkDFExecutionEngine
+#   module_name: great_expectations.datasource
+#   class_name: Datasource
+#   data_connectors:
+#     my_runtime_data_connector:
+#       class_name: RuntimeDataConnector
+#       batch_identifiers:
+#         - some_key_maybe_pipeline_stage
+#         # - some_other_key_maybe_airflow_run_id
+
+
 datasources:
   uber_data:
     class_name: Datasource
