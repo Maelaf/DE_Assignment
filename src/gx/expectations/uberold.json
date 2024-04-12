@@ -1,7 +1,7 @@
 
 {
   "data_asset_type": null,
-  "expectation_suite_name": "uber_data",
+  "expectation_suite_name": "uberold",
 
   "expectations": [
     {
